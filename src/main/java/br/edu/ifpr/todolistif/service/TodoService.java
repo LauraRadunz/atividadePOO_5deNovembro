@@ -2,6 +2,7 @@ package br.edu.ifpr.todolistif.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,8 @@ public class TodoService {
     // atualiza somente finishedAt, os demais dados são preservados
     public TodoResponseDTO concluir(Long id, TodoConclusaoDTO dto) {
         Todo tarefa = repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tarefa não encontrada"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tarefa não encontrada"));
+                        // .orElseThrow(() -> new NoSuchElementException("tarefa não encontrada"));
         tarefa.setFinishedAt(dto.finishedAt());
         Todo salva = repository.save(tarefa);
         return new TodoResponseDTO(salva);
